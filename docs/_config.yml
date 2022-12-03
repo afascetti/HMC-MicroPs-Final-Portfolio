@@ -1,10 +1,11 @@
 # Configuration Options
-title: Example MicroPs Project Website
-author: "Prof. Josh Brake"
+title: HMC MicroPs Final Project Portfolio
+author: "Ava Fascetti and Joseph Zales"
 theme: minima
 
 header-pages:
   - documentation.html
+  - design.html
   - resources.html
 
 
