@@ -18,11 +18,30 @@ The code base for this project is broken into three sections:
 The source code for the project is located in the Github repository [here](https://github.com/Joseph-Q-Zales/HMC-MicroPs-Final-Portfolio/tree/main/src).
 
 ## MCU Code
-Our microcontroller code includes a multiple library files,  using the CMCIS structures, and a `main.c` file in which all of the library files are included. The library files are named `STM32L432KC_x.c` where x is the name of the peripheral driven by that library. For example, at the heart of this project is I2C to communicate with the PN532 RFID/NCF Controller. The I2C driver is named `STM32L432KC_I2C.c`.
+Our microcontroller code includes a multiple library files,  using the CMCIS structures, and a `main.c` file in which all of the library files are included. The library files are named `STM32L432KC_x.c` where x is the name of the peripheral driven by that library. For example, the I2C is used to communicate with the PN532 RFID/NCF Controller. The I2C driver is named `STM32L432KC_I2C.c`.
 
 The `main.c` file calls functions from the various libraries and allows the MCU to act as the controller for both I2C (to the PN532) and SPI (to the FPGA).
 
+### MCU Communication
+The Nucleo microcontroller is at the heart of the project. It communicates via I2C with the PN532 NFC/RFID contoller using a set of multi-byte commands. See section **TODO** for details. It also communicates via one-directional SPI to the FPGA. 
+
+From the RFID reader, the MCU extracts the UID from the RFID card, separates it into the bytes needed by the FPGA and sends 5 bytes of data, via SPI, to the FPGA.
+
 ## FPGA Code
+The code to program the FPGA resides in one SystemVerilog file titled `main.sv`. The first module in this file, top, controlls the FGPA and calls the other modules as needed. 
+
+The module entitled `tune` is the main finite state machine (FSM) for the FPGA. See section **TODO** for details.
+
+## FPGA Testbenches
+A series of testbenches were created to test the FPGA prior to the integration with the MCU. 
+
+Test benches created
+
+* Testing SPI
+* Testing the main FSM
+* Testing frequency output
+* Testing duration outputs
+
 
 
 # Bill of Materials
