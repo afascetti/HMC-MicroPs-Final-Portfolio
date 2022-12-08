@@ -7,6 +7,7 @@ header-pages:
   - documentation.html
   - design.html
   - resources.html
+  - demo.html
 
 
 # Github Pages settings that cannot be changed
