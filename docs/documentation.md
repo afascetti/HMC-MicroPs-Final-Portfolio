@@ -7,10 +7,12 @@ permalink: /doc/
 # Schematics
 <!-- Include images of the schematics for your system. They should follow best practices for schematic drawings with all parts and pins clearly labeled. You may draw your schematics either with a software tool or neatly by hand. -->
 
+The hardware for the system include the Adafruit PN532 Breakout Board, Nucleo Microcontroller, Upduino ICE40 FPGA, and a speaker with an audio amplifier. The audio amplifier (a TI LM386) is in place to allow the speaker to draw more current than the FPGA pin would allow. The audio amplifier circuit comes from the LM386 datasheet.[^1]
+
 <div style="text-align: center">
   <img src="../assets/img/wiring.png" alt="wiring" width="700" />
 </div>
-
+Schematic of RFID Doorbell System.
 
 # Source Code Overview
 <!-- This section should include information to describe the organization of the code base and highlight how the code connects. -->
@@ -18,7 +20,7 @@ The code base for this project is broken into three sections:
 
 * MCU code, written in C
 * FPGA code, written in SystemVerilog
-* FPGA testbenches, also written in SystemVerilog
+* FPGA test benches, also written in SystemVerilog
 
 The source code for the project is located in the Github repository [here](https://github.com/Joseph-Q-Zales/HMC-MicroPs-Final-Portfolio/tree/main/src).
 
@@ -27,15 +29,13 @@ Our microcontroller code includes a multiple library files,  using the CMCIS str
 
 The `main.c` file calls functions from the various libraries and allows the MCU to act as the controller for both I2C (to the PN532) and SPI (to the FPGA).
 
-### MCU Communication
-The Nucleo microcontroller is at the heart of the project. It communicates via I2C with the PN532 NFC/RFID contoller using a set of multi-byte commands. See section **TODO** for details. It also communicates via one-directional SPI to the FPGA. 
 
-From the RFID reader, the MCU extracts the UID from the RFID card, separates it into the bytes needed by the FPGA and sends 5 bytes of data, via SPI, to the FPGA.
+For more information see the [design](https://joseph-q-zales.github.io/HMC-MicroPs-Final-Portfolio/design/) page.
 
 ## FPGA Code
-The code to program the FPGA resides in one SystemVerilog file titled `main.sv`. The first module in this file, top, controlls the FGPA and calls the other modules as needed. 
+The code to program the FPGA resides in one SystemVerilog file titled `main.sv`. The first module in this file, top, controls the FGPA and calls the other modules as needed. 
 
-The module entitled `tune` is the main finite state machine (FSM) for the FPGA. See section **TODO** for details. Below is the full netlist (all of the connections between modules) on the FPGA.
+The module entitled `tune` is the main finite state machine (FSM) for the FPGA. Below is the full netlist (all of the connections between modules) on the FPGA.
 
 
 <div style="text-align: center">
@@ -43,15 +43,20 @@ The module entitled `tune` is the main finite state machine (FSM) for the FPGA. 
 </div>
 FPGA Netlist.
 
+For more information see the [design](https://joseph-q-zales.github.io/HMC-MicroPs-Final-Portfolio/design/) page.
+
 ## FPGA Testbenches
-A series of testbenches were created to test the FPGA prior to the integration with the MCU. 
+A series of test benches were created to test the FPGA prior to the integration with the MCU. 
 
-Test benches created
+Test benches created to test
 
-* Testing SPI
-* Testing the main FSM
-* Testing frequency output
-* Testing duration outputs
+* SPI
+* Main FSM (the `tune` module)
+* Frequency generator
+* Duration counter
+* Decomposition of the MCU output
+* Enables for the system
+* Top module
 
 
 
@@ -72,3 +77,6 @@ Test benches created
 | Wire, various length | Connection between electronics | N/A | variable | | Stock room |
 
 **Total cost: $39.95**
+
+-----
+[^1]: ​​“LM386 Low Voltage Audio Power Amplifier Datasheet.” Texas Instruments, May 2017. [Online]. Available: [https://www.ti.com/lit/ds/symlink/lm386.pdf](https://www.ti.com/lit/ds/symlink/lm386.pdf).
