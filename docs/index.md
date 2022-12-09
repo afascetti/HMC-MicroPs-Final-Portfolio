@@ -25,7 +25,7 @@ With these ideas in mind, we have a vision of an RFID doorbell. Tap your RFID ca
 
 To realize this vision, we designed the system block diagram below. A PN532 RFID Reader is the peripheral in an I2C communication link with a STM32 Microcontroller. This RFID Reader is programmed by the MCU to “listen” for ID taps, and when an ID is tapped to the board, transmit the data back to the MCU. The MCU then bit swizzles the ID data and algorithmically calculates 5 bytes of data that is unique to the ID data collected. The MCU acts as the controller in a SPI communication link with the UPduino v3.1 FPGA to send these 5 bytes. The FPGA is used as a PWM driver to then create an audio signal from these 5 bytes, which outputs to a speaker system. Because the ID data collected by the RFID Reader will always be the same for the same card and an algorithm is used to generate specific frequencies and note lengths, an ID card will always produce the same doorbell tune. Additionally, every new ID tapped produces its own doorbell tune.
 
-Everyone gets their own unique doorbell.
+**Everyone gets their own unique doorbell.**
 
 # System Block Diagram
 
