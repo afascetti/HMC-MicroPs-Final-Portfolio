@@ -3,13 +3,8 @@ layout: page
 title: Design
 permalink: /design/
 ---
-# System Block Diagram
 
-<div style="text-align: center">
-  <img src="../assets/img/block_diagram.png" alt="block diagram" width="700" />
-</div>
-
-testing testing 123
+# Hardware
 
 ## Wiring Diagram
 
