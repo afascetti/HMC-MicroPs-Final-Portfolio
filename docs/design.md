@@ -18,9 +18,28 @@ INSERT HERE.
 
 For this project, we bought a PN532 RFID Reader because of its thorough documentation available online.[^1] This board has 3 supported host interfaces (I2C, SPI, and UART) and 6 different operating modes.[^2] We use this board as a I2C peripheral to the MCU in MIFARE Classic 1K mode. This means that when configured, any card that operates at 13.56 MHz (corresponding to MIFARE) that is held close to the board will be detected and the ID information associated with the card will be transmitted over I2C from the board to the MCU.
 
-As detailed in the implementation of the I2C on the MCU above, 3 lines are used in this communication: SDA, SCL, and IRQ. Normal I2C communication only uses SDA and SCL. The IRQ line in this application serves as a handshake mechanism. Since the PN532 board is the peripheral in this exchange, it cannot take command of the I2C line. Instead, it uses the IRQ bit to alert the MCU that a card has been detected. Once this IRQ line drops, the MCU can then begin the exchange so the PN532 can send back the ID data information that it collected. An example of this exchange is shown below. Once the MCU senses the falling edge of the IRQ line (D2), it opens the I2C channel with the initiation of the SCL (D0). This data 
+As detailed in the implementation of the I2C on the MCU above, 3 lines are used in this communication: SDA, SCL, and IRQ. Normal I2C communication only uses SDA and SCL. The IRQ line in this application serves as a handshake mechanism. Since the PN532 board is the peripheral in this exchange, it cannot take command of the I2C line. Instead, it uses the IRQ bit to alert the MCU that a card has been detected. Once this IRQ line drops, the MCU can then begin the exchange so the PN532 can send back the ID data information that it collected. An example of this exchange is shown below. Once the MCU senses the falling edge of the IRQ line (D2), it opens the I2C channel with the initiation of the SCL (D0). The SDA line (D1) then fills with the output data to be sent back to the MCU.
 
-The PN532 user manual details the commands supported for configuration of the board.[^3] Commands supported over 
+<div style="text-align: center">
+  <img src="../assets/img/IDdetected.png" alt="LA showing ID Detected" width="700" />
+</div>
+Logic Analyzer Snapshot of the Moment an ID is Detected by the PN532.
+
+The PN532 user manual details the commands supported for configuration of the board.[^3] Commands supported over I2C must adhere to the normal information frame shown below.
+
+<div style="text-align: center">
+  <img src="../assets/img/normalInfoFrame.png" alt="Information Frame" width="700" />
+</div>
+The Normal Information Frame as Defined by the PN532 User Manual.[^3]
+
+All I2C communication begins with the peripheral address followed by a 0x00 or 0x01 (0x01 for “read”). The information frame shown above then follows. As can be seen when comparing the information frame with the logic analyzer snapshot, the data being sent back to the MCU aligns with the information frame as expected. 
+
+In this case, we configure the PN532 for collecting 1 ID card of MIFARE 106 kbps type A. Therefore, the expected output data for the command to collect and return the ID data information is shown below. 
+
+<div style="text-align: center">
+  <img src="../assets/img/dataOutILPT.png" alt="UM Output ILPT" width="700" />
+</div>
+The Output Data of the InListPassiveTarget Command as Defined by the PN532 User Manual.[^3]
 
 ## FPGA Design
 
@@ -68,7 +87,6 @@ To create the correct threshold for each frequency, the following algorithm is u
   <img src="../assets/img/freqThresholdEq.png" alt="frequency threshold equation" width="300" />
 </div>
 
-$$ freqThreshold = {clockSpeed \over {desiredFreq * 2}} - 1 $$
 
 The desired frequency is multiplied by two to allow for a 50% duty cycle in the PWM. It is then subtracted by 1 as the counter starts at 0. Our clock speed is 24MHz. The table below shows the relationship between note, frequency and the clock strobe’s threshold.
 
@@ -101,26 +119,29 @@ For a list of durations used and the corresponding clock strobe thresholds, see 
  
 | Duration (ms) | Clock Strobe Threshold |
 | ---- | ---- | 
-| 1000 | 2.4x10<sup>10</sup> |
-| 500 | 1.2x10<sup>10</sup> |
-| 250 | 6x10<sup>9</sup> |
+| 1000 | 2.4x10<sup>10<\sup> |
+| 500 | 1.2x10<sup>10<\sup> |
+| 250 | 6x10<sup>9<\sup> |
+
 
 ### Main FSM
-The doorbell tune is made up of 4 notes (each with their own duration) and a number of times repeated. To accomplish this task
+The main FSM combines the frequency generator and the duration counter with the correct durations and frequencies required to create the doorbell tune. Each doorbell tune is made up of 4 notes (each with its own duration), and a number of times the 4 note sequence is repeated. To accomplish this task, we used a finite state machine. The image below shows this fsm.
 
-PWM driver.
+<div style="text-align: center">
+  <img src="../assets/img/fsm.png" alt="fsm" width="500" />
+</div>
+Finite State Machine for the FPGA PWM Driver Logic.
 
+The FPGA spends most of its time in the idle state waiting for a new signal to arrive from the microcontroller. Once a signal arrives, if the doorbell isn’t already making music (and the makingMusic output signal to the LED is high), then the start flag goes high and the FPGA moves to note0. Note that the start flag is controlled by the enabler. In note0, the makingMusic flag is set high to indicate to the user that the doorbell is playing.
 
 
 # FPGA Diagrams
 
 ### FPGA Main FSM
 
-<div style="text-align: center">
-  <img src="../assets/img/fsm.png" alt="fsm" width="500" />
-</div>
 
-Finite State Machine for the FPGA PWM Driver Logic.
+
+
 
 ### FPGA Block Diagram
 
@@ -128,19 +149,6 @@ Finite State Machine for the FPGA PWM Driver Logic.
   <img src="../assets/img/netListAnalyzer.png" alt="netlist" width="1200" />
 </div>
 
-testing testing 123
-
-## FGPA stuff that we will need to have somewhere
-
-Clockspeed 24 MHz.
-
-
-
-| Duration (ms) | Clock Strobe Threshold |
-| ---- | ---- | 
-| 1000 | 2.4x10^10^ |
-| 500 | 1.2x10^10^ |
-| 250 | 6x10^9^ |
 
 
 —--
@@ -148,3 +156,4 @@ Clockspeed 24 MHz.
 [^1]: INSERT REFERENCE FOR adafruit github for the PN532.
 [^2]: INSERT REFERENCE FOR PN532 datasheet.
 [^3]: INSERT REFERENCE FOR PN532 user manual.
+
