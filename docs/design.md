@@ -11,7 +11,7 @@ permalink: /design/
 # System Block Diagram
 
 <div style="text-align: center">
-  <img src="https://github.com/Joseph-Q-Zales/HMC-MicroPs-Final-Portfolio/blob/main/docs/assets/img/wiring.png" alt="block diagram" width="700" />
+  <img src="./assets/img/block_diagram.png" alt="block diagram" width="700" />
 </div>
 
 testing testing 123
