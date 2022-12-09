@@ -7,6 +7,11 @@ permalink: /resources/
 # References
 1. “Advantages and Limitations of I2C Communication,” Total Phase Blog, August 31, 2016, https://www.totalphase.com/blog/2016/08/advantages-limitations-i2c-communication/.
 2. “How RFID Works,” HowStuffWorks, November 5, 2007, https://electronics.howstuffworks.com/gadgets/high-tech-gadgets/rfid.htm.
+3. INSERT MCU RM
+4. INSERT MCU Datasheet
+5. INSERT PN532 UM
+6. INSERT PN532 Datasheet
+7. INSERT arduino PN532 github source
 
 
 # Inspiration
