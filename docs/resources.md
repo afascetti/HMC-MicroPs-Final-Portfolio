@@ -6,16 +6,24 @@ permalink: /resources/
 
 ## References
 
-PaintYourDragon and LadyAda, “Adafruit-PN532.” Adafruit Industries, Nov. 28, 2022. Accessed: Dec. 08, 2022. [Online]. Available: https://github.com/adafruit/Adafruit-PN532
+PaintYourDragon and LadyAda, “Adafruit-PN532.” Adafruit Industries, Nov. 28, 2022. Accessed: Dec. 08, 2022. [Online]. Available: [https://github.com/adafruit/Adafruit-PN532](https://github.com/adafruit/Adafruit-PN532)
 
-“Advantages and Limitations of I2C Communication,” Total Phase Blog, Aug. 31, 2016. https://www.totalphase.com/blog/2016/08/advantages-limitations-i2c-communication/ (accessed Dec. 08, 2022).
+“Advantages and Limitations of I2C Communication,” Total Phase Blog, Aug. 31, 2016. [https://www.totalphase.com/blog/2016/08/advantages-limitations-i2c-communication/](https://github.com/adafruit/Adafruit-PN532) (accessed Dec. 08, 2022).
 
-“How RFID Works,” HowStuffWorks, Nov. 05, 2007. https://electronics.howstuffworks.com/gadgets/high-tech-gadgets/rfid.htm (accessed Dec. 08, 2022).
+J. Brake, “E155 Lab 7: The Advanced Encryption Standard.” Harvey Mudd College, 2022.
+“How RFID Works,” HowStuffWorks, Nov. 05, 2007. [https://electronics.howstuffworks.com/gadgets/high-tech-gadgets/rfid.html](https://electronics.howstuffworks.com/gadgets/high-tech-gadgets/rfid.html) (accessed Dec. 08, 2022).
 
-“PN532 Datasheet.” NXP Semiconductors, 2017. [Online]. Available: https://www.nxp.com/docs/en/nxp/data-sheets/PN532_C1.pdf
+“iCE40 UltraPlus Family Data Sheet,” Latice Semiconductor, p. 53, Aug. 2021.
 
-“PN532 User Manual.” NXP Semiconductors, 2007. [Online]. Available: https://www.nxp.com/docs/en/user-guide/141520.pdf
+“PN532 Datasheet.” NXP Semiconductors, 2017. [Online]. Available: [https://www.nxp.com/docs/en/nxp/data-sheets/PN532_C1.pdf](https://www.nxp.com/docs/en/nxp/data-sheets/PN532_C1.pdf)
 
+“PN532 User Manual.” NXP Semiconductors, 2007. [Online]. Available: [https://www.nxp.com/docs/en/user-guide/141520.pdf](https://www.nxp.com/docs/en/user-guide/141520.pdf)
+
+“STM32L4 Reference Manual.” ST Microelectronics, Oct. 2018.
+
+“STM32L432KC Datasheet.” ST Microelectronics, May 2018.
+
+J. Valdez and J. Becker, “Understanding the I2C Bus,” p. 8, 2015.
 
 
 ## Inspiration
