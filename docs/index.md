@@ -27,7 +27,7 @@ With these ideas in mind, we have a vision of an RFID doorbell. Tap your RFID ca
 # System Block Diagram
 
 <div style="text-align: center">
-  <img src="../assets/img/block_diagram.png" alt="block diagram" width="700" />
+  <img src="./assets/img/block_diagram.png" alt="block diagram" width="700" />
 </div>
 
 

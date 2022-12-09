@@ -4,13 +4,6 @@ title: Design
 permalink: /design/
 ---
 
-# Hardware
-
-## Wiring Diagram
-
-<div style="text-align: center">
-  <img src="../assets/img/wiring.png" alt="wiring" width="700" />
-</div>
 
 testing testing 123
 
