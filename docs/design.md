@@ -93,7 +93,14 @@ The Normal Information Frame as Defined by the PN532 User Manual.[^3]
 
 All I2C communication begins with the peripheral address (followed by a 0x01 if the information is going from the peripheral to the controller). The address for the PN532 is 0x48. The information frame shown above then follows. As can be seen when comparing the information frame with the logic analyzer snapshot, the data being sent back to the MCU aligns with the information frame as expected. Note that the entire exchange does not fit on one screen of the logic analyzer, and thus just the beginning of the exchange is shown.
 
-In this case, we configure the PN532 for collecting 1 ID card of MIFARE 106 kbps type A. To do this, we use the InListPassiveTarget command. This command configures the board to detect RFID signals in passive mode. The expected output data for this command is shown below. This output includes the ID information collected from the card that was detected. As can be seen, this expected data output corresponds to what is shown on the logic analyzer snapshot above when an ID is detected and the data is sent back to the MCU. 
+In this case, we configure the PN532 for collecting 1 ID card of MIFARE 106 kbps type A. To do this, we use the InListPassiveTarget command. This command configures the board to detect RFID signals in passive mode. The figure below illustrates the information flow for the InListPassiveTarget command. As can be seen, the MCU must first send the command out, and receive and ACK back. Then, once a MIFARE card is detected, the PN532 can send this output data back.
+
+<div style="text-align: center">
+  <img src="../assets/img/ILPT_command_exchange.png" alt="Data Exchange ILPT" width="700" />
+</div>
+An Example of the InListPassiveTarget Command Information Flow as Defined by the PN532 User Manual.[^3]
+
+The expected output data for this command is shown below. This output includes the ID information collected from the card that was detected. As can be seen, this expected data output corresponds to what is shown on the logic analyzer snapshot above when an ID is detected and the data is sent back to the MCU. 
 
 <div style="text-align: center">
   <img src="../assets/img/dataOutILPT.png" alt="UM Output ILPT" width="700" />
