@@ -4,6 +4,8 @@ title: Project Overview
 permalink: /
 exclude: true
 ---
+By Ava Fascetti and Joseph Zales
+
 <div style="text-align: center">
   <img src="./assets/img/HMC_logo.png" alt="HMClogo" width="200" />
 </div>
