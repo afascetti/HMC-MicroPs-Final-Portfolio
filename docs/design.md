@@ -12,11 +12,68 @@ Descriptions of the implementation and design of the MCU, RFID Reader, and FPGA 
 
 ## MCU Design
 
-INSERT HERE.
+The MCU role is threefold:
+Control the I2C communication with the PN532
+Extract and process the ID information that was sent over I2C
+Control the SPI communication with the FPGA
+
+Each of these functions are detailed below.
+
+# I2C Device Driver
+
+Much of this development work began with understanding the I2C protocol. The benefit of I2C is that it only uses two wires to communicate and the addition of a new peripheral to the ‘bus’ (the set of two wires, see Figure below) is easy and straightforward. Note that while this website uses the terminology of ‘controller’ and ‘peripheral,’ the previous nomenclature was ‘master’ and ‘slave’ (as is in the illustration below). 
+
+<div style="text-align: center">
+  <img src="../assets/img/I2Cbus.png" alt="I2C Bus" width="700" />
+</div>
+Example of an I2C Bus.[^1]
+
+As in the figure, the two wires have a shared clock and data line. To allow for easy transmission of data, these lines are pulled high (by the Rp resistor) and are ‘open drain’ on the microcontroller and peripherals (meaning they can only be pulled low). By only allowing the devices to pull the lines low, it stops contention on the bus. 
+
+For the peripherals on the bus to know when the data being transmitted across the data line is for them, there is an addressing system. Each peripheral is assigned a 7-bit address (or more recently, a 10-bit address). When a peripheral’s address is called on the bus, it pays attention to what data comes next. With this addressing system, 128 peripherals can be added to one bus thus allowing for easy expansion. The two downsides of using I2C is that it is slower than SPI in that there has to be the peripheral address bit for every interaction and that the peripherals can’t tell the controller that it has data to send. 
+
+As our peripheral requires that the MCU knows when someone has tapped a RFID device, the peripheral uses a ‘handshake’ method. Basically, this is a third wire, which the PN532 calls the IRQ, that is pulled low when an event (tapping the RFID device) takes place. When this signal is drawn low, the MCU knows to poll the PN532 for the RFID number.
+
+We created a custom I2C device driver to enable this I2C functionality on the MCU. To implement I2C on the MCU, we created separate C and header files to control the initialization and sending/receiving of data between the MCU and a peripheral device. From looking at the documentation, we determined that we should operate the MCU in “controller receiver” mode and the RFID board in “peripheral transmitter” mode.
+
+The most difficult part of creating this driver was trying to send and receive multiple bytes. To send or receive a byte, the shift register for the data coming in and out of the communication link must be empty or full, respectively. For this to happen, the peripheral must send an ACK byte, telling the MCU that it has acknowledged the data. The ACK byte for the PN532 peripheral is standardized and is shown below.
+
+<div style="text-align: center">
+  <img src="../assets/img/normalInfoFrame.png" alt="ACK Frame" width="700" />
+</div>
+ACK Frame as Defined by the PN532 User Manual.[^2]
+
+Because this ACK byte is so important, we created a special function to determine whether an ACK was read or not. This serves as troubleshooting in the sense that we know not to advance through our code if the peripheral hasn’t sent an ACK back from a command.
+
+# ID Data Processing
+
+The ID collected from the I2C communication is stored in a receive array. From the PN532 documentation, as described below, we know what form to expect this information in. We therefore know that the 4 bytes corresponding to the unique ID of the card correspond to bytes 14, 15, 16, and 17 of this receive array.[^2] The below diagram shows how these bytes of data are mapped to 5 bytes of unique signal data. The FPGA algorithm, described below, explains how these signal data bytes are then transformed into unique tunes.
+
+<div style="text-align: center">
+  <img src="../assets/img/MCUalg.png" alt="MCU Algorithm" width="700" />
+</div>
+Creation of 5 Bytes of Signal Data from 4 Bytes of Unique ID Data.
+
+# SPI with FPGA
+
+The MCU serves as the controller in a SPI communication link with the FPGA. Even though SPI involves 4 wires usually (SCL, SDO, SDI, CE), we only require 3 because we never read data in from the FPGA. 
+
+To perform this communication, the MCU asserts chip enable, sends all five bytes of signal data using our SPI device driver, and then lowers chip enable again. 
+
+Shown below is a snapshot of the logic analyzer as 5 bytes of signal data are sent from the MCU to the FPGA. 
+
+<div style="text-align: center">
+  <img src="../assets/img/spiDataSent.png" alt="SPI on LA" width="700" />
+</div>
+Logic Analyzer Snapshot of the MCU Sending 5 Bytes of Signal Data to the FPGA over SPI.
+
+# Cumulative MCU Routine
+
+The MCU routine consists of turning on the RF Field for the PN532, giving the PN532 the command to listen for cards, waiting for the PN532 to say that a card has been detected, reading the detected information, creating 5 bytes of signal data from the ID of the card, and sending these bytes to the FPGA over an SPI link. Phew.
 
 ## New Hardware: RFID Reader
 
-For this project, we bought a PN532 RFID Reader because of its thorough documentation available online.[^1] This board has 3 supported host interfaces (I2C, SPI, and UART) and 6 different operating modes.[^2] We use this board as a I2C peripheral to the MCU in MIFARE Classic 1K mode. This means that when configured, any card that operates at 13.56 MHz (corresponding to MIFARE) that is held close to the board will be detected and the ID information associated with the card will be transmitted over I2C from the board to the MCU.
+For this project, we bought a PN532 RFID Reader because of its thorough documentation available online.[^3] This board has 3 supported host interfaces (I2C, SPI, and UART) and 6 different operating modes.[^4] We use this board as a I2C peripheral to the MCU in MIFARE Classic 1K mode. This means that when configured, any card that operates at 13.56 MHz (corresponding to MIFARE) that is held close to the board will be detected and the ID information associated with the card will be transmitted over I2C from the board to the MCU.
 
 As detailed in the implementation of the I2C on the MCU above, 3 lines are used in this communication: SDA, SCL, and IRQ. Normal I2C communication only uses SDA and SCL. The IRQ line in this application serves as a handshake mechanism. Since the PN532 board is the peripheral in this exchange, it cannot take command of the I2C line. Instead, it uses the IRQ bit to alert the MCU that a card has been detected. Once this IRQ line drops, the MCU can then begin the exchange so the PN532 can send back the ID data information that it collected. An example of this exchange is shown below. Once the MCU senses the falling edge of the IRQ line (D2), it opens the I2C channel with the initiation of the SCL (D0). The SDA line (D1) then fills with the output data to be sent back to the MCU.
 
@@ -25,23 +82,30 @@ As detailed in the implementation of the I2C on the MCU above, 3 lines are used 
 </div>
 Logic Analyzer Snapshot of the Moment an ID is Detected by the PN532.
 
-The PN532 user manual details the commands supported for configuration of the board.[^3] Commands supported over I2C must adhere to the normal information frame shown below.
+The PN532 user manual details the commands supported for configuration of the board.[^2] Commands supported over I2C must adhere to the normal information frame shown below.
 
 <div style="text-align: center">
   <img src="../assets/img/normalInfoFrame.png" alt="Information Frame" width="700" />
 </div>
-The Normal Information Frame as Defined by the PN532 User Manual.[^3]
+The Normal Information Frame as Defined by the PN532 User Manual.[^2]
 
-All I2C communication begins with the peripheral address followed by a 0x00 or 0x01 (0x01 for “read”). The information frame shown above then follows. As can be seen when comparing the information frame with the logic analyzer snapshot, the data being sent back to the MCU aligns with the information frame as expected. Note that the entire exchange does not fit on one screen of the logic analyzer, and thus just the beginning of the exchange is shown.
+All I2C communication begins with the peripheral address (followed by a 0x01 if the information is going from the peripheral to the controller). The address for the PN532 is 0x48. The information frame shown above then follows. As can be seen when comparing the information frame with the logic analyzer snapshot, the data being sent back to the MCU aligns with the information frame as expected. Note that the entire exchange does not fit on one screen of the logic analyzer, and thus just the beginning of the exchange is shown.
 
-In this case, we configure the PN532 for collecting 1 ID card of MIFARE 106 kbps type A. Therefore, the expected output data for the command to collect and return the ID data information is shown below. 
+In this case, we configure the PN532 for collecting 1 ID card of MIFARE 106 kbps type A. To do this, we use the InListPassiveTarget command. This command configures the board to detect RFID signals in passive mode. The expected output data for this command is shown below. This output includes the ID information collected from the card that was detected. As can be seen, this expected data output corresponds to what is shown on the logic analyzer snapshot above when an ID is detected and the data is sent back to the MCU. 
 
 <div style="text-align: center">
   <img src="../assets/img/dataOutILPT.png" alt="UM Output ILPT" width="700" />
 </div>
-The Output Data of the InListPassiveTarget Command as Defined by the PN532 User Manual.[^3]
+The Output Data of the InListPassiveTarget Command as Defined by the PN532 User Manual.[^2]
 
-All outputs from the PN532 have a TFI byte (see Information Frame) of D5 while all input commands have a TFI byte of D4. The next data byte corresponds to the command being sent or received. The following bytes of data are unique to the command being sent: some have none while some have many. The User Manual for the PN532 det
+All outputs from the PN532 have a TFI byte (see Information Frame) of D5 while all input commands have a TFI byte of D4. The next data byte corresponds to the command being sent or received. The following bytes of data are unique to the command being sent: some have none while some have many. The snapshot below shows the moment the InListPassiveTarget command is sent to the PN532 board. The address is sent followed by the information frame corresponding to the sent command.
+
+<div style="text-align: center">
+  <img src="../assets/img/ILPTcommandSent.png" alt="LA showing ILPT Command" width="700" />
+</div>
+Logic Analyzer Snapshot of the InListPassiveTarget Command being Sent to the PN532.
+
+To be able to detect a RFID card in passive mode, the RF Field of the PN532 must be on. To turn it on, we use the RFRegulationTest command. There is no output for this command.
 
 ## FPGA Design
 
@@ -56,7 +120,7 @@ To do this, the FPGA code is divided into three cascading sections: data receive
 This block diagram illustrates a high-level view of the FPGA code. 
 
 # Data Received from MCU
-The first section, data received, is based on the SPI code from Lab 7 (implementing AES on an FPGA). For lab 7, 128-bits were sent to the FPGA via SPI, and after the FPGA had completed encrypting the data, it sent the encrypted data back. However, as the output of the FPGA goes to a speaker system instead of back to the MCU, the FPGA does not need to have the capability to send anything back via SPI to the MCU. From the MCU, the FPGA receives a 40-bit signal from which to decompose frequencies, durations and the number of times to repeat.
+The first section, data received, is based on the SPI code from Lab 7 (implementing AES on an FPGA).[^4] For lab 7, 128-bits were sent to the FPGA via SPI, and after the FPGA had completed encrypting the data, it sent the encrypted data back. However, as the output of the FPGA goes to a speaker system instead of back to the MCU, the FPGA does not need to have the capability to send anything back via SPI to the MCU. From the MCU, the FPGA receives a 40-bit signal from which to decompose frequencies, durations and the number of times to repeat.
 
 At its core, SPI is a shared shift register. This means that every signal input (a 1 or 0) shifts the previous inputs left by 1. Therefore, to create an SPI module on the FPGA, on the rising edge of the sck clock line from the MCU, a new bit of data was shifted into the register on the FPGA. At the end of 40 clock cycles (enough to push in the 40 bits), the chip enable (CE) goes from high to low signaling that the data can now be decomposed. 
 
@@ -121,9 +185,9 @@ For a list of durations used and the corresponding clock strobe thresholds, see 
  
 | Duration (ms) | Clock Strobe Threshold |
 | ---- | ---- | 
-| 1000 | 2.4x10<sup>10<\sup> |
-| 500 | 1.2x10<sup>10<\sup> |
-| 250 | 6x10<sup>9<\sup> |
+| 1000 | 2.4x10<sup>10</sup> |
+| 500 | 1.2x10<sup>10</sup> |
+| 250 | 6x10<sup>9</sup> |
 
 
 ### Main FSM
@@ -138,8 +202,11 @@ The FPGA spends most of its time in the idle state, waiting for a new signal to 
 
 In note3, the frequency and duration thresholds are passed into the frequency generator and duration counter with the note3 thresholds. Every time the FPGA gets into note3, it adds 1 to a counter and then determines — once done goes high — if the next state will be back to note0 and it will repeat the tune or if it will go to the complete state. To do this, when the FPGA moves into note3, a counter increases (and the stopCountFlag is set until the FSM comes back to note0). If the counter is equal to the threshold set by the repeated byte sent from the FPGA then the FPGA moves into the complete state. In the complete state, the makingMusic flag is set to 0 (and the music stops and LED turns off).
 
+
 —--
 
-[^1]: PaintYourDragon and LadyAda, “Adafruit-PN532.” Adafruit Industries, Nov. 28, 2022. Accessed: Dec. 08, 2022. [Online]. Available: [https://github.com/adafruit/Adafruit-PN532](https://github.com/adafruit/Adafruit-PN532)
-[^2]: “PN532 Datasheet.” NXP Semiconductors, 2017. [Online].Available: [https://www.nxp.com/docs/en/nxp/data-sheets/PN532_C1.pdf](https://www.nxp.com/docs/en/nxp/data-sheets/PN532_C1.pdf)
-[^3]: “PN532 User Manual.” NXP Semiconductors, 2007. [Online].Available: [https://www.nxp.com/docs/en/user-guide/141520.pdf](https://www.nxp.com/docs/en/user-guide/141520.pdf)
+[^1]: J. Valdez and J. Becker, “Understanding the I2C Bus,” p. 8, 2015.
+[^2]: “PN532 User Manual.” NXP Semiconductors, 2007. [Online]. Available: [https://www.nxp.com/docs/en/user-guide/141520.pdf](https://www.nxp.com/docs/en/user-guide/141520.pdf).
+[^3]: PaintYourDragon and LadyAda, “Adafruit-PN532.” Adafruit Industries, Nov. 28, 2022. Accessed: Dec. 08, 2022. [Online]. Available: [https://github.com/adafruit/Adafruit-PN532](https://github.com/adafruit/Adafruit-PN532).
+[^4]: “PN532 Datasheet.” NXP Semiconductors, 2017. [Online]. Available: [https://www.nxp.com/docs/en/nxp/data-sheets/PN532_C1.pdf](https://www.nxp.com/docs/en/nxp/data-sheets/PN532_C1.pdf).
+[^5]: J. Brake, “E155 Lab 7: The Advanced Encryption Standard.” Harvey Mudd College, 2022.
