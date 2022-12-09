@@ -32,7 +32,7 @@ The PN532 user manual details the commands supported for configuration of the bo
 </div>
 The Normal Information Frame as Defined by the PN532 User Manual.[^3]
 
-All I2C communication begins with the peripheral address followed by a 0x00 or 0x01 (0x01 for “read”). The information frame shown above then follows. As can be seen when comparing the information frame with the logic analyzer snapshot, the data being sent back to the MCU aligns with the information frame as expected. 
+All I2C communication begins with the peripheral address followed by a 0x00 or 0x01 (0x01 for “read”). The information frame shown above then follows. As can be seen when comparing the information frame with the logic analyzer snapshot, the data being sent back to the MCU aligns with the information frame as expected. Note that the entire exchange does not fit on one screen of the logic analyzer, and thus just the beginning of the exchange is shown.
 
 In this case, we configure the PN532 for collecting 1 ID card of MIFARE 106 kbps type A. Therefore, the expected output data for the command to collect and return the ID data information is shown below. 
 
@@ -40,6 +40,8 @@ In this case, we configure the PN532 for collecting 1 ID card of MIFARE 106 kbps
   <img src="../assets/img/dataOutILPT.png" alt="UM Output ILPT" width="700" />
 </div>
 The Output Data of the InListPassiveTarget Command as Defined by the PN532 User Manual.[^3]
+
+All outputs from the PN532 have a TFI byte (see Information Frame) of D5 while all input commands have a TFI byte of D4. The next data byte corresponds to the command being sent or received. The following bytes of data are unique to the command being sent: some have none while some have many. The User Manual for the PN532 det
 
 ## FPGA Design
 
@@ -132,28 +134,12 @@ The main FSM combines the frequency generator and the duration counter with the 
 </div>
 Finite State Machine for the FPGA PWM Driver Logic.
 
-The FPGA spends most of its time in the idle state waiting for a new signal to arrive from the microcontroller. Once a signal arrives, if the doorbell isn’t already making music (and the makingMusic output signal to the LED is high), then the start flag goes high and the FPGA moves to note0. Note that the start flag is controlled by the enabler. In note0, the makingMusic flag is set high to indicate to the user that the doorbell is playing.
+The FPGA spends most of its time in the idle state, waiting for a new signal to arrive from the microcontroller. Once a signal arrives, if the doorbell isn’t already making music (and the makingMusic output signal to the LED is high), then the start flag goes high, and the FPGA moves to note0. Note that the start flag is controlled by the enabler. In note0, the makingMusic flag is set high to indicate to the user that the doorbell is playing. Additionally, the stopCountFlag is set to 0 (more on this when note3 is discussed). At the same time, the frequency and duration thresholds for note0 are passed to the frequency generator and duration counter allowing them to play the right note. Once the duration counter has reached its threshold, a done signal will go high, thus moving the FPGA into the note1 state. In this state, the frequency and duration thresholds for note1 are passed into the frequency generator and duration counter. Once done goes high, the FPGA moves into state note2 in which the same occurs. 
 
-
-# FPGA Diagrams
-
-### FPGA Main FSM
-
-
-
-
-
-### FPGA Block Diagram
-
-<div style="text-align: center">
-  <img src="../assets/img/netListAnalyzer.png" alt="netlist" width="1200" />
-</div>
-
-
+In note3, the frequency and duration thresholds are passed into the frequency generator and duration counter with the note3 thresholds. Every time the FPGA gets into note3, it adds 1 to a counter and then determines — once done goes high — if the next state will be back to note0 and it will repeat the tune or if it will go to the complete state. To do this, when the FPGA moves into note3, a counter increases (and the stopCountFlag is set until the FSM comes back to note0). If the counter is equal to the threshold set by the repeated byte sent from the FPGA then the FPGA moves into the complete state. In the complete state, the makingMusic flag is set to 0 (and the music stops and LED turns off).
 
 —--
 
 [^1]: INSERT REFERENCE FOR adafruit github for the PN532.
 [^2]: INSERT REFERENCE FOR PN532 datasheet.
 [^3]: INSERT REFERENCE FOR PN532 user manual.
-

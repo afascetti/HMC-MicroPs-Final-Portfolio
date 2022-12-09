@@ -35,7 +35,13 @@ From the RFID reader, the MCU extracts the UID from the RFID card, separates it 
 ## FPGA Code
 The code to program the FPGA resides in one SystemVerilog file titled `main.sv`. The first module in this file, top, controlls the FGPA and calls the other modules as needed. 
 
-The module entitled `tune` is the main finite state machine (FSM) for the FPGA. See section **TODO** for details.
+The module entitled `tune` is the main finite state machine (FSM) for the FPGA. See section **TODO** for details. Below is the full netlist (all of the connections between modules) on the FPGA.
+
+
+<div style="text-align: center">
+  <img src="../assets/img/netListAnalyzer.png" alt="netlist" width="1200" />
+</div>
+FPGA Netlist.
 
 ## FPGA Testbenches
 A series of testbenches were created to test the FPGA prior to the integration with the MCU. 
