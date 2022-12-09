@@ -140,6 +140,6 @@ In note3, the frequency and duration thresholds are passed into the frequency ge
 
 —--
 
-[^1]: INSERT REFERENCE FOR adafruit github for the PN532.
-[^2]: INSERT REFERENCE FOR PN532 datasheet.
-[^3]: INSERT REFERENCE FOR PN532 user manual.
+[^1]: PaintYourDragon and LadyAda, “Adafruit-PN532.” Adafruit Industries, Nov. 28, 2022. Accessed: Dec. 08, 2022. [Online]. Available: [https://github.com/adafruit/Adafruit-PN532](https://github.com/adafruit/Adafruit-PN532)
+[^2]: “PN532 Datasheet.” NXP Semiconductors, 2017. [Online].Available: [https://www.nxp.com/docs/en/nxp/data-sheets/PN532_C1.pdf](https://www.nxp.com/docs/en/nxp/data-sheets/PN532_C1.pdf)
+[^3]: “PN532 User Manual.” NXP Semiconductors, 2007. [Online].Available: [https://www.nxp.com/docs/en/user-guide/141520.pdf](https://www.nxp.com/docs/en/user-guide/141520.pdf)
