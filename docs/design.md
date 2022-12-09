@@ -3,15 +3,27 @@ layout: page
 title: Design
 permalink: /design/
 ---
+<div style="text-align: left">
+  <img src="./assets/img/HMC_logo.png" alt="HMClogo" width="50" />
+</div>
+
+
 # System Block Diagram
+
 <div style="text-align: center">
   <img src="./assets/img/block_diagram.png" alt="block diagram" width="700" />
 </div>
 
+testing testing 123
+
 ## Wiring Diagram
+
 <div style="text-align: center">
   <img src="./assets/img/wiring.png" alt="wiring" width="700" />
 </div>
+
+testing testing 123
+
 
 # MCU Design
 
@@ -20,14 +32,20 @@ permalink: /design/
 ## FPGA Diagrams
 
 ### FPGA Main FSM
+
 <div style="text-align: center">
   <img src="./assets/img/fsm.png" alt="fsm" width="500" />
 </div>
 
+testing testing 123
+
 ### FPGA Block Diagram
+
 <div style="text-align: center">
   <img src="./assets/img/netListAnalyzer.png" alt="netlist" width="1200" />
 </div>
+
+testing testing 123
 
 ## FGPA stuff that we will need to have somewhere
 
