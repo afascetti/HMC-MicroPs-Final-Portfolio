@@ -6,7 +6,7 @@ theme: minima
 header-pages:
   - documentation.html
   - design.html
-  - resources.html
+  - references.html
   - demo.html
 
 

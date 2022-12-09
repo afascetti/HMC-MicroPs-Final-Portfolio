@@ -1,10 +1,8 @@
 ---
 layout: page
-title: Resources
-permalink: /resources/
+title: References
+permalink: /references/
 ---
-
-## References
 
 PaintYourDragon and LadyAda, “Adafruit-PN532.” Adafruit Industries, Nov. 28, 2022. Accessed: Dec. 08, 2022. [Online]. Available: [https://github.com/adafruit/Adafruit-PN532](https://github.com/adafruit/Adafruit-PN532).
 
