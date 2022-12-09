@@ -3,14 +3,31 @@ layout: page
 title: Design
 permalink: /design/
 ---
+# System Block Diagram
+<div style="text-align: center">
+  <img src="./assets/img/block_diagram.png" alt="block diagram" width="700" />
+</div>
+
+## Wiring Diagram
+<div style="text-align: center">
+  <img src="./assets/img/wiring.png" alt="wiring" width="700" />
+</div>
 
 # MCU Design
 
-## MCU Block Diagram
-
 # FPGA Design
 
-## FPGA Block Diagram
+## FPGA Diagrams
+
+### FPGA Main FSM
+<div style="text-align: center">
+  <img src="./assets/img/fsm.png" alt="fsm" width="500" />
+</div>
+
+### FPGA Block Diagram
+<div style="text-align: center">
+  <img src="./assets/img/netListAnalyzer.png" alt="netlist" width="1200" />
+</div>
 
 ## FGPA stuff that we will need to have somewhere
 
