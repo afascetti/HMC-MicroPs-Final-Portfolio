@@ -33,9 +33,9 @@ To realize this vision, we designed the system block diagram below. A PN532 RFID
   <img src="./assets/img/block_diagram.png" alt="block diagram" width="700" />
 </div>
 
+Block Diagram of RFID Doorbell System.
 
-
-
+-------
 
 [^1]:  “Advantages and Limitations of I2C Communication,” Total Phase Blog, August 31, 2016, https://www.totalphase.com/blog/2016/08/advantages-limitations-i2c-communication/.
 [^2]: “How RFID Works,” HowStuffWorks, November 5, 2007, https://electronics.howstuffworks.com/gadgets/high-tech-gadgets/rfid.htm.
