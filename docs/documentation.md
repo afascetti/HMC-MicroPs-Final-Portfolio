@@ -20,7 +20,7 @@ The code base for this project is broken into three sections:
 
 * MCU code, written in C
 * FPGA code, written in SystemVerilog
-* FPGA test benches, also written in SystemVerilog
+* FPGA testbenches, also written in SystemVerilog
 
 The source code for the project is located in the Github repository [here](https://github.com/Joseph-Q-Zales/HMC-MicroPs-Final-Portfolio/tree/main/src).
 
@@ -46,9 +46,9 @@ FPGA Netlist.
 For more information see the [design](https://joseph-q-zales.github.io/HMC-MicroPs-Final-Portfolio/design/) page.
 
 # FPGA Testbenches
-A series of test benches were created to test the FPGA prior to the integration with the MCU. 
+A series of testbenches were created to test the FPGA prior to the integration with the MCU. 
 
-Test benches created to test
+These testbenches are listed as follows:
 
 * SPI
 * Main FSM (the `tune` module)
@@ -65,9 +65,9 @@ Test benches created to test
 
 | Item | Purpose | Part Number | Quantity | Unit Price | Vendor/Source |
 | ---- | ------- | ----------| ----- | ---- | ---- |
-| Adafruit PN532 NFC/RFID Controller / breakout board | RFID Peripheral | 364 | 1 | $39.95 |  [Adafruit](https://www.adafruit.com/product/364) |
+| Adafruit PN532 NFC/RFID Controller / breakout board | RFID peripheral | 364 | 1 | $39.95 |  [Adafruit](https://www.adafruit.com/product/364) |
 | Nucleo STM32L432KC Microcontroller | Interface between RFID peripheral and FPGA, runs algorithm to determine doorbell | NUCLEO-L432KC | 1 | | Lab kit |
-| Upduino ICE40 & UP5K FPGA | Creates PWM signal to drive speaker based on RFID ID# | N/A | 1 | | lab kit |
+| Upduino ICE40 & UP5K FPGA | Creates PWM signal to drive speaker based on RFID ID# | N/A | 1 | | Lab kit |
 | 8Ω speaker | Doorbell output speaker | N/A | 1 | | Stock room |
 | Resistor, 4.7kΩ | Pull-up resistor for I2C connections | N/A | 2 | | Stock room |
 | Resistor, 15kΩ | Speaker volume control | N/A | 1 | | Stock room |
