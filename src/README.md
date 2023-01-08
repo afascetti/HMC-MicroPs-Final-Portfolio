@@ -8,7 +8,7 @@ The code base for this project is broken into three sections:
 * FPGA testbenches, also written in SystemVerilog
 
 # MCU Code
-Our microcontroller code includes a multiple library files, using the CMCIS structures, and a `main.c` file in which all of the library files are included. The library files are named `STM32L432KC_x.c` where x is the name of the peripheral driven by that library. For example, the I2C is used to communicate with the PN532 RFID/NCF Controller. The I2C driver is named `STM32L432KC_I2C.c`.
+Our microcontroller code includes multiple library files, using the CMCIS structures, and a `main.c` file in which all of the library files are included. The library files are named `STM32L432KC_x.c` where x is the name of the peripheral driven by that library. For example, the I2C is used to communicate with the PN532 RFID/NCF Controller. The I2C driver is named `STM32L432KC_I2C.c`.
 
 The `main.c` file calls functions from the various libraries and allows the MCU to act as the controller for both I2C (to the PN532) and SPI (to the FPGA).
 
