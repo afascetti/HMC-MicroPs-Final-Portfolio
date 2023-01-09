@@ -190,6 +190,7 @@ Very similar to how the frequency generator works, the duration counter also use
   <img src="../assets/img/durThresholdEq.png" alt="duration threshold equation" width="300" />
 </div>
 
+
 The table below shows a list of durations used and the corresponding clock strobe thresholds.
  
 | Duration (ms) | Clock Strobe Threshold |
