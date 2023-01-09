@@ -4,7 +4,7 @@ title: References
 permalink: /references/
 ---
 
-“Advantages and Limitations of I2C Communication,” Total Phase Blog, Aug. 31, 2016. [Online]. Available: [https://www.totalphase.com/blog/2016/08/advantages-limitations-i2c-communication/](https://github.com/adafruit/Adafruit-PN532).
+“Advantages and Limitations of I2C Communication,” Total Phase Blog, Aug. 31, 2016. [Online]. Available: [https://www.totalphase.com/blog/2016/08/advantages-limitations-i2c-communication/](https://www.totalphase.com/blog/2016/08/advantages-limitations-i2c-communication/).
 
 “iCE40 UltraPlus Family Data Sheet,” Latice Semiconductor, p. 53, Aug. 2021.
 
