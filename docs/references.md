@@ -9,6 +9,7 @@ permalink: /references/
 “iCE40 UltraPlus Family Data Sheet,” Latice Semiconductor, p. 53, Aug. 2021.
 
 J. Brake, “E155 Lab 7: The Advanced Encryption Standard.” Harvey Mudd College, 2022.
+
 “How RFID Works,” HowStuffWorks, Nov. 05, 2007. [https://electronics.howstuffworks.com/gadgets/high-tech-gadgets/rfid.html](https://electronics.howstuffworks.com/gadgets/high-tech-gadgets/rfid.html).
 
 J. Valdez and J. Becker, “Understanding the I2C Bus,” p. 8, 2015.
