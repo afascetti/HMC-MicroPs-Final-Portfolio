@@ -183,11 +183,9 @@ The desired frequency is multiplied by two to allow for a 50% duty cycle in the 
 
 ### Duration Counter
 Very similar to how the frequency generator works, the duration counter also uses a clock strobe to determine when the expected duration has elapsed. However, as the duration counter is used to determine a time instead of a frequency, the threshold calculation looks slightly different. In the calculation for the duration threshold shown below, the clock speed is again 24MHz and the duration is given in ms.
-
 <div style="text-align: center">
   <img src="../assets/img/durThresholdEq.png" alt="duration threshold equation" width="300" />
 </div>
-
 
 The table below shows a list of durations used and the corresponding clock strobe thresholds.
  
