@@ -4,13 +4,13 @@ title: References
 permalink: /references/
 ---
 
-“Advantages and Limitations of I2C Communication,” Total Phase Blog, Aug. 31, 2016. [https://www.totalphase.com/blog/2016/08/advantages-limitations-i2c-communication/](https://github.com/adafruit/Adafruit-PN532).
+“Advantages and Limitations of I2C Communication,” Total Phase Blog, Aug. 31, 2016. [Online]. Available: [https://www.totalphase.com/blog/2016/08/advantages-limitations-i2c-communication/](https://github.com/adafruit/Adafruit-PN532).
 
 “iCE40 UltraPlus Family Data Sheet,” Latice Semiconductor, p. 53, Aug. 2021.
 
 J. Brake, “E155 Lab 7: The Advanced Encryption Standard.” Harvey Mudd College, 2022.
 
-“How RFID Works,” HowStuffWorks, Nov. 05, 2007. [https://electronics.howstuffworks.com/gadgets/high-tech-gadgets/rfid.html](https://electronics.howstuffworks.com/gadgets/high-tech-gadgets/rfid.html).
+“How RFID Works,” HowStuffWorks, Nov. 05, 2007. [Online]. Available: [https://electronics.howstuffworks.com/gadgets/high-tech-gadgets/rfid.html](https://electronics.howstuffworks.com/gadgets/high-tech-gadgets/rfid.html).
 
 J. Valdez and J. Becker, “Understanding the I2C Bus,” p. 8, 2015.
 
