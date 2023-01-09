@@ -157,11 +157,9 @@ For example, in the figure below, the threshold is 3 meaning that every 4 clock 
 Example of Frequency Generator's Use of a Clock Strobe.
 
 To create the correct threshold for each frequency, the following algorithm is used:
-
 <div style="text-align: center">
   <img src="../assets/img/freqThresholdEq.png" alt="frequency threshold equation" width="300" />
 </div>
-
 
 The desired frequency is multiplied by two to allow for a 50% duty cycle in the PWM. Additionally, 1 is subtracted as the counter starts at 0. Our clock speed is 24MHz. The table below shows the relationship between note, frequency, and the clock strobe’s threshold.
 
