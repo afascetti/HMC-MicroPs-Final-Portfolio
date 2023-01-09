@@ -6,7 +6,7 @@ permalink: /design/
 
 This system involves four independent systems working together: the RFID Reader, the MCU, the FPGA, and the speaker system. All must be designed independently, and then integrated together.
 
-As the design of the speaker system is analog, it is not described in detail here. It simply involves a LM386 Audio Amplifier and an 8Ω speaker. The breadboard schematic of this system is shown in the [Documentation](https://joseph-q-zales.github.io/HMC-MicroPs-Final-Portfolio/doc/). 
+As the design of the speaker system is analog, it is not described in detail here. It simply involves a LM386 Audio Amplifier and an 8Ω speaker. The breadboard schematic of this system is shown in the [Documentation](https://afascetti.github.io/HMC-MicroPs-Final-Portfolio/doc/). 
 
 Descriptions of the implementation and design of the MCU, RFID Reader, and FPGA follow.
 
