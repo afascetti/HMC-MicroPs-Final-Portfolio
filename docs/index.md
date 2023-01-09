@@ -34,5 +34,5 @@ Block Diagram of RFID Doorbell System.
 
 -------
 
-[^1]:  “Advantages and Limitations of I2C Communication,” Total Phase Blog, August 31, 2016, https://www.totalphase.com/blog/2016/08/advantages-limitations-i2c-communication/.
-[^2]: “How RFID Works,” HowStuffWorks, November 5, 2007, https://electronics.howstuffworks.com/gadgets/high-tech-gadgets/rfid.htm.
+[^1]:  “Advantages and Limitations of I2C Communication,” Total Phase Blog, August 31, 2016. [https://www.totalphase.com/blog/2016/08/advantages-limitations-i2c-communication/](https://github.com/adafruit/Adafruit-PN532).
+[^2]: “How RFID Works,” HowStuffWorks, November 5, 2007. [https://electronics.howstuffworks.com/gadgets/high-tech-gadgets/rfid.html](https://electronics.howstuffworks.com/gadgets/high-tech-gadgets/rfid.html).
